@@ -1,0 +1,14 @@
+{% extends "layouts/main.html.twig" %}
+{% block title %}{% endblock %}
+{% block body %}
+    <p class="text-center" id="text"><button class="btn btn-lg btn-success" id="buy-cow">Buy a cow</button></p>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $("#buy-cow").click(function () {
+           $.get("/api/v1/user/activity/create?action=button-cow").then(function (res) {
+               $("#text").html("thankYou");
+           })
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "layouts/main.html.twig" %}
+{% block title %}Reports{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <canvas id="chart" width="400" height="100"></canvas>
+        </div>
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>date</th>
+                        <th>count page view A</th>
+                        <th>count page view B</th>
+                        <th>count click "Buy a cow"</th>
+                        <th>count click "Download"</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for date in userActivities.dates%}
+                        <tr>
+                            <th>{{ date }}</th>
+                            <td>{{ userActivities.actions["link-cow"][date] ?? 0 }}</td>
+                            <td>{{ userActivities.actions["link-app"][date] ?? 0}}</td>
+                            <td>{{ userActivities.actions["button-cow"][date] ?? 0}}</td>
+                            <td>{{ userActivities.actions["button-app"][date] ?? 0}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="/assets/js/libs/chart.min.js"></script>
+    <script>
+        let data = {{ userActivities|json_encode|raw }};
+    </script>
+    <script src="/assets/js/reports.js"></script>
+{% endblock %}

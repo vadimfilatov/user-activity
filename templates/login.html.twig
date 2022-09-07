@@ -1,0 +1,23 @@
+{% extends "layouts/main.html.twig" %}
+{% block title %}Login{% endblock %}
+{% block body %}
+    <form class="row g-3 justify-content-md-center" action="{{ path('login') }}" method="post">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        <div class="col-lg-4 col-md-12 col-sm-12">
+            {% if error %}
+                <div class="col-12 alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+            <div class="col-12">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" name="_username" id="username">
+            </div>
+            <div class="col-12">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" name="_password" id="password">
+            </div>
+            <div class="col-12 mt-4">
+                <button type="submit" class="btn btn-primary w-100">Sign in</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

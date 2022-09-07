@@ -1,0 +1,67 @@
+{% extends "layouts/main.html.twig" %}
+{% block title %}Statistic{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-3">
+            <select name="userIds" class="form-control" multiple data-placeholder="Select user id">
+                {% for user in users %}
+                    <option value="{{ user.id }}"
+                            {% if request.userIds is defined and user.id in request.userIds %}selected{% endif %}>{{ user.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-3">
+            <select name="actions" class="form-control" multiple data-placeholder="Select action">
+                {% for key, action in actions %}
+                    <option value="{{ key }}" {% if request.actions is defined and key in request.actions %}selected{% endif %}>{{ action }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-3">
+            <input class="form-control" id="datepicker" autocomplete="off" value="{% if request.date_from is defined %}{{ request.date_from }}{% endif %}">
+        </div>
+        <div class="col-3">
+            <button class="btn btn-success" id="search">Search</button>
+        </div>
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>date</th>
+                        <th>user</th>
+                        <th>action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for userActivity in userActivities%}
+                        <tr>
+                            <th>{{ userActivity[0].date|date('Y-m-d H:i:s') }}</th>
+                            <td>{{ userActivity.username }}</td>
+                            <td>{{ actions[userActivity[0].actions] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <nav aria-label="...">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="#" data-page="{{ prevPage }}" tabindex="-1">Previous</a>
+                    </li>
+                    {% for page in pages %}
+                        <li class="page-item">
+                            <a class="page-link {% if page == currentPage %}active{% endif %}" href="#" data-page="{{ page }}">{{ page }}</a>
+                        </li>
+                    {% endfor %}
+                    <li class="page-item">
+                        <a class="page-link" href="#" data-page="{{ nextPage }}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="/assets/js/libs/select2.min.js"></script>
+    <script src="/assets/js/libs/datepicker.js"></script>
+    <script src="/assets/js/statistic.js"></script>
+{% endblock %}
